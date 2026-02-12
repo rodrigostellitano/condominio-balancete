@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+*.pyc
+
+# Arquivos do VS Code
+.vscode/
+
+# Dados sensíveis ou pesados
+data/*.xlsx
+data/*.xls
