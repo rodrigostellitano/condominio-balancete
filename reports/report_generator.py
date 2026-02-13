@@ -123,14 +123,33 @@ class ReportGenerator:
             doc.add_paragraph(f"- {casa}")
 
         # --- Responsáveis ---
-        data = doc.add_heading(f"Rio de Janeiro,     de {date_info['Current Month']} de {date_info['Current Year']}", level=2)
+        data = doc.add_heading(f"Rio de Janeiro,     de {date_info['Current Month']} de {date_info['Current Year']}", level=3)
         data.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+       
+
+        # for cargo, nome in people.items():
+        #     if "1" in cargo or "2" in cargo:
+        #         doc.add_paragraph(f"{nome} - Fiscal: ________________________________________________ ")
+        #     else:
+        #         doc.add_paragraph(f"{nome} - {cargo}: ________________________________________________")
+
+        # Define o comprimento total da linha (em número de caracteres)
+        comprimento_total = 100  # ajuste conforme quiser
 
         for cargo, nome in people.items():
             if "1" in cargo or "2" in cargo:
-                doc.add_paragraph(f"{nome} - Fiscal: ________________________________________________ ")
+                texto = f"{nome} - Fiscal: "
             else:
-                doc.add_paragraph(f"{nome} - {cargo}: ________________________________________________")
+                texto = f"{nome} - {cargo}: "
+
+            # Quantos underlines precisamos para completar a linha
+            num_underscores = max(comprimento_total - len(texto), 10)  # sempre pelo menos 10 _
+            underline = "_" * num_underscores
+
+            doc.add_paragraph(f"{texto}{underline}")
+
+
 
             
 
