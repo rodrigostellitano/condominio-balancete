@@ -1,4 +1,5 @@
 # services/finance_service.py
+from models.models import EntranceResult, ExitResult
 
 class FinanceService:
 
@@ -29,15 +30,20 @@ class FinanceService:
 
         total_entrada = total_cotas + total_cotas_multa + total_tag
 
-        return value_previus_month, current_month, total_entrada,{
-            "Total Cotas": total_cotas,
-            "Qtd Cotas Pagas": qtd_cotas_pagas,
-            "Qtd Cotas Pagas Multa": qtd_cotas_pagas_multa,
-            "Qtd Tag": qtd_tag,
-            "Total Cotas com Multa": total_cotas_multa,
-            "Total Tag": total_tag,
-            
-        }
+        return EntranceResult(
+            previous_value=value_previus_month,
+            current_month=current_month,
+            total=total_entrada,
+            details={
+        "Total Cotas": total_cotas,
+        "Qtd Cotas Pagas": qtd_cotas_pagas,
+        "Qtd Cotas Pagas Multa": qtd_cotas_pagas_multa,
+        "Qtd Tag": qtd_tag,
+        "Total Cotas com Multa": total_cotas_multa,
+        "Total Tag": total_tag,
+    }
+)
+
 
 
     def calculate_exit(self,df):
@@ -49,7 +55,11 @@ class FinanceService:
 
         
 
-        return total_saida, df_saida
+        return ExitResult(
+                total=total_saida,
+                details=df_saida
+            )
+
 
 
     def calculate_total(self,value_previus_month,total_entrace,result_exit):
