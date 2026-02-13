@@ -1,10 +1,12 @@
 # services/finance_service.py
 from models.models import EntranceResult, ExitResult
+import pandas as pd
+
 
 class FinanceService:
 
     
-    def calculate_entrace(self,df, df_aux):
+    def calculate_entrace(self,df: pd.DataFrame, df_aux: pd.DataFrame) -> EntranceResult:
         # --- Quantidades (Main) ---
         entradas = dict(zip(df["Titulo"], df["Informacoes"]))
 
@@ -46,7 +48,7 @@ class FinanceService:
 
 
 
-    def calculate_exit(self,df):
+    def calculate_exit(self,df: pd.DataFrame) -> ExitResult:
 
         df_saida = df[["Saida", "Valor"]].dropna()
         df_saida = dict(zip(df_saida["Saida"], df_saida["Valor"]))
@@ -62,5 +64,11 @@ class FinanceService:
 
 
 
-    def calculate_total(self,value_previus_month,total_entrace,result_exit):
-        return value_previus_month + total_entrace - result_exit
+    def calculate_total(
+    self,
+    value_previus_month: float,
+    total_entrance: float,
+    total_exit: float
+) -> float:
+
+        return value_previus_month + total_entrance - total_exit

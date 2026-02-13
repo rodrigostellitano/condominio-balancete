@@ -6,7 +6,7 @@
 
 class Utils:
 
-    def ajust_date(self,current_month):
+    def ajust_date(self,current_month: str) -> dict:
             MESES_PT = {
             1: "Janeiro",
             2: "Fevereiro",

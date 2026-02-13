@@ -1,13 +1,18 @@
 
 
 from models.models import DebitResult
+import pandas as pd
+from typing import List
+
+
+
 
 # services/debit_service.py
 
 class DebitService:
 
     
-    def extract_house_payed(self,df):
+    def extract_house_payed(self,df: pd.DataFrame) -> List[str]:
         df_pago = df[["Cotas Atrasadas Pagas", "Mes Atrasado", "Ano Atrasado"]].dropna()
 
         MESES_ABREV = {
@@ -41,7 +46,7 @@ class DebitService:
 
 
 
-    def extract_house_debit(self,df):
+    def extract_house_debit(self,df: pd.DataFrame) -> DebitResult:
         df_debito = df[["Casas com debito", "Mes", "Ano"]].dropna()
 
         MESES_ABREV = {

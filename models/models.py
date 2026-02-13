@@ -11,13 +11,13 @@ class EntranceResult:
     previous_value: float
     current_month: str
     total: float
-    details: Dict
+    details: Dict[str, float]
 
 
 @dataclass
 class ExitResult:
     total: float
-    details: Dict
+    details: Dict[str,float]
 
 
 @dataclass

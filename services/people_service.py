@@ -1,13 +1,14 @@
 
 
 #service/people_service.py
-
+import pandas as pd
 
 class PeopleService:
 
     
 
-    def extract_names(self,df_aux):
+    def extract_names(self,df_aux: pd.DataFrame) -> dict:
+
         df_aux = df_aux[["Titulo", "Info"]].dropna()
         names = dict(zip(df_aux["Titulo"], df_aux["Info"]))
         sindico = names.get("Sindico", 0)
