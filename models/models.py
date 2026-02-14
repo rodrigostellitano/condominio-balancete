@@ -24,6 +24,7 @@ class ExitResult:
 class DebitResult:
     houses_debit: List[str]
     total_houses_debit: int
+    df_houses_debit: pd.DataFrame
 
 
 @dataclass

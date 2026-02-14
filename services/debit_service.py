@@ -77,5 +77,6 @@ class DebitService:
 
         return DebitResult(
                     houses_debit=resultado,
-                    total_houses_debit=total_casas_em_debito
+                    total_houses_debit=total_casas_em_debito,
+                    df_houses_debit=df_debito
                 )

@@ -8,3 +8,7 @@ __pycache__/
 # Dados sensíveis ou pesados
 data/*.xlsx
 data/*.xls
+
+*.sqlite
+*.db
+__pycache__/
