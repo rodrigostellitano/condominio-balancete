@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Aux Form</title>
+  </head>
+  <body>
+    {% extends "base.html" %} {% block content %}
+    <h1>Configurações</h1>
+
+    <form method="POST">
+      <h3>Valores</h3>
+
+      <label>Valor da Cota:</label><br />
+      <input
+        type="number"
+        step="0.01"
+        name="valor_cota"
+        value="{{ values['valor_cota'] }}"
+      /><br /><br />
+
+      <label>Valor da Cota Atrasada:</label><br />
+      <input
+        type="number"
+        step="0.01"
+        name="valor_cota_atrasada"
+        value="{{ values['valor_cota_atrasada'] }}"
+      /><br /><br />
+
+      <label>Valor Tag:</label><br />
+      <input
+        type="number"
+        step="0.01"
+        name="valor_tag"
+        value="{{ values['valor_tag'] }}"
+      /><br /><br />
+
+      <h3>Diretoria</h3>
+
+      <label>Síndico:</label><br />
+      <input
+        type="text"
+        name="Sindico"
+        value="{{ management['Sindico'] }}"
+      /><br /><br />
+
+      <label>Presidente:</label><br />
+      <input
+        type="text"
+        name="Presidente"
+        value="{{ management['Presidente'] }}"
+      /><br /><br />
+
+      <label>Conselheiro 1:</label><br />
+      <input
+        type="text"
+        name="Conselheiro 1"
+        value="{{ management['Conselheiro 1'] }}"
+      /><br /><br />
+
+      <label>Conselheiro 2:</label><br />
+      <input
+        type="text"
+        name="Conselheiro 2"
+        value="{{ management['Conselheiro 2'] }}"
+      /><br /><br />
+
+      <button type="submit">Salvar</button>
+    </form>
+    {% endblock %}
+  </body>
+</html>

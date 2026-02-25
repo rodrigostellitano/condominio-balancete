@@ -1,28 +1,6 @@
 from database.connection import get_connection
 import re
 
-def add_columns_monthly_balance():
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    # Adiciona colunas apenas se não existirem
-    try:
-        cursor.execute("ALTER TABLE monthly_balance ADD COLUMN total_income REAL DEFAULT 0;")
-    except Exception:
-        pass  # ignora se já existir
-
-    try:
-        cursor.execute("ALTER TABLE monthly_balance ADD COLUMN total_expense REAL DEFAULT 0;")
-    except Exception:
-        pass
-
-    try:
-        cursor.execute("ALTER TABLE monthly_balance ADD COLUMN current_balance REAL DEFAULT 0;")
-    except Exception:
-        pass
-
-    conn.commit()
-    conn.close()
 
 
 

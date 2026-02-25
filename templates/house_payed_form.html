@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Casas Pagas</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+      }
+      h1 {
+        margin-bottom: 20px;
+      }
+      form {
+        margin-bottom: 20px;
+      }
+      input[type="text"],
+      input[type="number"] {
+        padding: 5px;
+        margin-right: 10px;
+      }
+      button {
+        padding: 5px 10px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid #000;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    {% extends "base.html" %} {% block content %}
+    <p>DEBUG: {{ paid_houses }}</p>
+
+    <h1>Casas que pagaram</h1>
+    <p>Mês do formulário: {{ month }}/{{ year }}</p>
+
+    <!-- Formulário para adicionar casas -->
+    <form method="POST">
+      <input type="hidden" name="month" value="{{ month }}" />
+      <input type="hidden" name="year" value="{{ year }}" />
+      <input type="text" name="house" placeholder="Nome da casa" required />
+      <input
+        type="number"
+        name="paid_month"
+        placeholder="Mês pago"
+        min="1"
+        max="12"
+        required
+      />
+      <input
+        type="number"
+        name="paid_year"
+        placeholder="Ano pago"
+        min="2000"
+        max="2100"
+        required
+      />
+      <button type="submit" name="add_paid_house">Adicionar</button>
+    </form>
+
+    <!-- Tabela de casas adicionadas -->
+    <h2>Casas adicionadas</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Casa</th>
+          <th>Mês Pago</th>
+          <th>Ano Pago</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if paid_houses %} {% for d in paid_houses %}
+        <tr>
+          <td>{{ d["house"] }}</td>
+          <td>{{ d["paid_month"] }}</td>
+          <td>{{ d["paid_year"] }}</td>
+          <td>
+            <form method="POST">
+              <input type="hidden" name="month" value="{{ month }}" />
+              <input type="hidden" name="year" value="{{ year }}" />
+              <input
+                type="hidden"
+                name="delete_index"
+                value="{{ loop.index0 }}"
+              />
+              <button type="submit">Deletar</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %} {% else %}
+        <tr>
+          <td colspan="4" style="text-align: center">
+            Nenhuma casa adicionada ainda.
+          </td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+    <p><strong>Total de casas: {{ total_casas }}</strong></p>
+
+    <!-- Formulário para salvar tudo no banco -->
+    <form method="POST" style="margin-top: 12px">
+      <input type="hidden" name="month" value="{{ month }}" />
+      <input type="hidden" name="year" value="{{ year }}" />
+      <button type="submit" name="save_all">Salvar no banco</button>
+    </form>
+    {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Cadastrar Mês</title>
+  </head>
+  <body>
+    {% extends "base.html" %} {% block content %}
+    <h1>Cadastrar Novo Mês</h1>
+
+    <form method="POST" action="/general_info">
+      <div>
+        <label for="month">Mês:</label>
+        <input
+          type="number"
+          id="month"
+          name="month"
+          min="1"
+          max="12"
+          value="{{ mes_atual }}"
+          required
+        />
+      </div>
+
+      <br />
+
+      <div>
+        <label for="year">Ano:</label>
+        <input
+          type="number"
+          id="year"
+          name="year"
+          value="{{ ano_atual }}"
+          required
+        />
+      </div>
+
+      <br />
+
+      <div>
+        <label for="previus_balance"
+          >Valor do condomínio do mês anterior:</label
+        >
+        <input
+          type="number"
+          id="previus_balance"
+          name="previus_balance"
+          value="{{ valor_anterior }}"
+          step="0.01"
+          required
+        />
+      </div>
+
+      <br />
+
+      <div>
+        <label for="paid_quotas">Cotas pagas:</label>
+        <input
+          type="number"
+          id="paid_quotas"
+          name="paid_quotas"
+          value="0"
+          min="0"
+          max="30"
+          required
+        />
+      </div>
+
+      <br />
+
+      <div>
+        <label for="tags">Tags:</label>
+        <input type="number" id="tags" name="tags" value="0" min="0" required />
+      </div>
+
+      <br />
+
+      <button type="submit">Salvar</button>
+      {% endblock %}
+    </form>
+  </body>
+</html>

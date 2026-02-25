@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Sistema{% endblock %}</title>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      .menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: #1f2937;
+        padding: 15px;
+        display: flex;
+        gap: 30px;
+      }
+
+      .menu a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu a:hover {
+        color: #38bdf8;
+      }
+
+      .content {
+        margin-top: 70px; /* espaço para o menu fixo */
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="{{ url_for('general_info_bp.general_info') }}">Geral</a>
+      <a href="{{ url_for('general_info_bp.expense_form') }}">Despesas</a>
+      <a
+        href="{{ url_for('general_info_bp.debit_houses_form', month=mes_atual, year=ano_atual) }}"
+        >Casas com Débito</a
+      >
+      <a
+        href="{{ url_for('general_info_bp.house_payed_form', month=mes_atual, year=ano_atual)}}"
+        >Casas Pagas</a
+      >
+      <a href="{{ url_for('general_info_bp.aux_form') }}">Aux</a>
+    </div>
+
+    <div class="content">{% block content %}{% endblock %}</div>
+  </body>
+</html>
