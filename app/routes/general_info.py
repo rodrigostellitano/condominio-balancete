@@ -14,10 +14,10 @@ general_info_bp = Blueprint("general_info_bp", __name__)
 @general_info_bp.route("/general_info", methods=["GET", "POST"])
 def general_info():
     # Valores padrão para preencher o formulário
-    
-    hoje = datetime.now()
-    session["month"] = hoje.month
-    session["year"] = hoje.year
+    if "month" not in session or "year" not in session:
+        hoje = datetime.now()
+        session["month"] = hoje.month
+        session["year"] = hoje.year
     valor_anterior = 0  # pode deixar 0 ou pegar do banco se quiser
 
     if request.method == "POST":
@@ -45,6 +45,8 @@ def general_info():
 
         return redirect(url_for("general_info_bp.expense_form", month=session["month"], year=session["year"]))
     
+    
+
     return render_template(
         "general_info.html",
         mes_atual=session["month"],
@@ -54,8 +56,8 @@ def general_info():
 
 @general_info_bp.route("/expense_form", methods=["GET", "POST"])
 def expense_form():
-    month = request.args.get("month")
-    year = request.args.get("year")
+    month = session.get("month")
+    year = session.get("year")
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -229,6 +231,11 @@ def house_payed_form():
     month = session.get("month")
     year = session.get("year")
     print(f"House Payed Form - Month: {month}, Year: {year}")
+    conn = get_connection()
+    cursor = conn.cursor()
+     # Info do mês atual
+    cursor.execute("SELECT * FROM general_form WHERE month=? AND year=?", (month, year))
+    info = cursor.fetchone()
 
     # Inicializa lista na sessão se não existir
     if "current_paid_houses" not in session:
@@ -296,8 +303,7 @@ def house_payed_form():
 
         # Salvar no banco: persiste `current_paid_houses` em `house_payed_form`
         if "save_all" in request.form:
-            conn = get_connection()
-            cursor = conn.cursor()
+            
 
             # Remove registros antigos para o mês/ano atual
             cursor.execute("DELETE FROM house_payed_form WHERE month=? AND year=?", (str(month), str(year)))
@@ -322,7 +328,8 @@ def house_payed_form():
         paid_houses=paid_houses,
         month=month,
         year=year,
-        total_casas=len(paid_houses)
+        total_casas=len(paid_houses),
+        info=info
     )
 
 
@@ -331,6 +338,10 @@ def aux_form():
     conn = get_connection()
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
+    month = session.get("month")
+    year = session.get("year")
+    cursor.execute("SELECT * FROM general_form WHERE month=? AND year=?", (month, year))
+    info = cursor.fetchone()
 
     # =========================
     # POST (SALVAR)
@@ -425,5 +436,9 @@ def aux_form():
     return render_template(
         "aux_form.html",
         values=values_data,
-        management=management_data
+        management=management_data,
+        info=info,
+        month=month,
+        year=year
+    
     )

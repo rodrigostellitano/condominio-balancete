@@ -1,78 +1,98 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Cadastro de Despesas</title>
-  </head>
-  <body>
-    {% extends "base.html" %} {% block content %}
-    <h1>Cadastro de Despesas</h1>
-
-    <!-- Tabela com informações do mês -->
-    {% if info %}
+{% extends "base.html" %} {% block content %}
+  <h1>Cadastro de Despesas</h1>
+  <h1>
+    Casas com Débito
+    <span class="periodo">{{ month }}/{{ year }}</span>
+  </h1>
+  {% if info %}
+  <div class="card">
     <h2>Informações do Mês</h2>
-    <table border="1">
-      <tr>
-        <th>Mês</th>
-        <th>Ano</th>
-        <th>Valor Anterior</th>
-        <th>Cotas Pagas</th>
-        <th>Tags</th>
-        <th>Ações</th>
-      </tr>
-      <tr>
-        <td>{{ info[1] }}</td>
-        <td>{{ info[2] }}</td>
-        <td>{{ info[3] }}</td>
-        <td>{{ info[4] }}</td>
-        <td>{{ info[5] }}</td>
-        <td>
-          <a href="{{ url_for('general_info_bp.general_info') }}">Editar</a>
-        </td>
-      </tr>
-    </table>
-    {% endif %}
 
+    <table>
+      <thead>
+        <tr>
+          <th>Mês</th>
+          <th>Ano</th>
+          <th>Valor Anterior</th>
+          <th>Cotas Pagas</th>
+          <th>Tags</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ info[1] }}</td>
+          <td>{{ info[2] }}</td>
+          <td>{{ info[3] }}</td>
+          <td>{{ info[4] }}</td>
+          <td>{{ info[5] }}</td>
+          <td>
+            <a href="{{ url_for('general_info_bp.general_info') }}">Editar</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  <div class="card">
     <h2>Adicionar Despesa</h2>
+
     <form method="POST">
       <input type="hidden" name="add_expense" value="1" />
-      <label>Descrição:</label>
-      <input type="text" name="description" required /><br />
-      <label>Valor:</label>
-      <input type="number" step="0.01" name="amount" required /><br /><br />
+
+      <div class="form-group">
+        <label>Descrição:</label>
+        <input type="text" name="description" required />
+      </div>
+
+      <div class="form-group">
+        <label>Valor:</label>
+        <input type="number" step="0.01" name="amount" required />
+      </div>
+
       <button type="submit">Adicionar Despesa</button>
     </form>
+  </div>
 
+  <div class="card">
     <h2>Despesas cadastradas</h2>
-    <table border="1">
-      <tr>
-        <th>Descrição</th>
-        <th>Valor</th>
-        <th>Ações</th>
-      </tr>
-      {% for e in expenses %}
-      <tr>
-        <td>{{ e.description }}</td>
-        <td>{{ e.amount }}</td>
-        <td>
-          <form method="POST" style="display: inline">
-            <input
-              type="hidden"
-              name="delete_index"
-              value="{{ loop.index0 }}"
-            />
-            <button type="submit">Excluir</button>
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
+
+    <table>
+      <thead>
+        <tr>
+          <th>Descrição</th>
+          <th>Valor</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in expenses %}
+        <tr>
+          <td>{{ e.description }}</td>
+          <td>{{ e.amount }}</td>
+          <td>
+            <form method="POST" style="display: inline">
+              <input
+                type="hidden"
+                name="delete_index"
+                value="{{ loop.index0 }}"
+              />
+              <button type="submit" class="btn-danger">Excluir</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
+  </div>
 
-    <!-- Botão para salvar todas no banco -->
-
+  <div class="card">
     <form method="POST">
       <input type="hidden" name="save_all" value="1" />
-      <button type="submit">Salvar todas as despesas no banco</button>
+      <button type="submit" class="btn-secondary">Salvar</button>
     </form>
-    {% endblock %}
-  </body>
-</html>
+  </div>
+</div>
+
+{% endblock %}

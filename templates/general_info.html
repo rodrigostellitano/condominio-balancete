@@ -1,14 +1,11 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Cadastrar Mês</title>
-  </head>
-  <body>
-    {% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block content %}
+
+<div class="form-wrapper">
+  <div class="form-card">
     <h1>Cadastrar Novo Mês</h1>
 
     <form method="POST" action="/general_info">
-      <div>
+      <div class="form-group">
         <label for="month">Mês:</label>
         <input
           type="number"
@@ -21,9 +18,7 @@
         />
       </div>
 
-      <br />
-
-      <div>
+      <div class="form-group">
         <label for="year">Ano:</label>
         <input
           type="number"
@@ -34,12 +29,10 @@
         />
       </div>
 
-      <br />
-
-      <div>
-        <label for="previus_balance"
-          >Valor do condomínio do mês anterior:</label
-        >
+      <div class="form-group">
+        <label for="previus_balance">
+          Valor do balancete do mês anterior:
+        </label>
         <input
           type="number"
           id="previus_balance"
@@ -50,32 +43,56 @@
         />
       </div>
 
-      <br />
+      <div class="form-group">
+        {% set casas = [ "1", "2", "3", "4/101", "4/102", "5", "6/101", "6/102",
+        "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18",
+        "19", "20", "21", "22", "23", "24", "25", "26", "27", "28" ] %}
 
-      <div>
-        <label for="paid_quotas">Cotas pagas:</label>
-        <input
-          type="number"
-          id="paid_quotas"
-          name="paid_quotas"
-          value="0"
-          min="0"
-          max="30"
-          required
-        />
+        <div class="houses-grid">
+          {% for casa in casas %}
+          <label class="house-item">
+            <input type="checkbox" class="house-check" />
+            {{ casa }}
+          </label>
+          {% endfor %}
+        </div>
       </div>
+      <label>Cotas Pagas:</label>
 
-      <br />
+      <!-- Campo real que vai para o backend -->
+      <input
+        type="number"
+        id="paid_quotas"
+        name="paid_quotas"
+        value="0"
+        readonly
+        required
+      />
 
-      <div>
+      <div class="form-group">
         <label for="tags">Tags:</label>
         <input type="number" id="tags" name="tags" value="0" min="0" required />
       </div>
 
-      <br />
-
-      <button type="submit">Salvar</button>
-      {% endblock %}
+      <button type="submit" class="btn-submit">Salvar</button>
     </form>
-  </body>
-</html>
+  </div>
+</div>
+
+<script>
+  const checkboxes = document.querySelectorAll(".house-check");
+  const paidInput = document.getElementById("paid_quotas");
+
+  function updateTotal() {
+    let total = 0;
+    checkboxes.forEach((cb) => {
+      if (cb.checked) total++;
+    });
+    paidInput.value = total;
+  }
+
+  checkboxes.forEach((cb) => {
+    cb.addEventListener("change", updateTotal);
+  });
+</script>
+{% endblock %}

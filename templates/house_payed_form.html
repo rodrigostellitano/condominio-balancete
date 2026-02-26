@@ -1,77 +1,74 @@
-<!doctype html>
-<html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Casas Pagas</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 40px;
-      }
-      h1 {
-        margin-bottom: 20px;
-      }
-      form {
-        margin-bottom: 20px;
-      }
-      input[type="text"],
-      input[type="number"] {
-        padding: 5px;
-        margin-right: 10px;
-      }
-      button {
-        padding: 5px 10px;
-      }
-      table {
-        border-collapse: collapse;
-        width: 100%;
-        margin-top: 20px;
-      }
-      table,
-      th,
-      td {
-        border: 1px solid #000;
-      }
-      th,
-      td {
-        padding: 8px;
-        text-align: left;
-      }
-    </style>
-  </head>
-  <body>
-    {% extends "base.html" %} {% block content %}
-    <p>DEBUG: {{ paid_houses }}</p>
+{% extends "base.html" %} {% block content %}
+  <h1>Casas Pagas em Atraso <span class="periodo">{{ month }}/{{ year }}</span></h1>
+  {% if info %}
+  <div class="card">
+    <h2>Informações do Mês</h2>
 
-    <h1>Casas que pagaram</h1>
-    <p>Mês do formulário: {{ month }}/{{ year }}</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Mês</th>
+          <th>Ano</th>
+          <th>Valor Anterior</th>
+          <th>Cotas Pagas</th>
+          <th>Tags</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ info[1] }}</td>
+          <td>{{ info[2] }}</td>
+          <td>{{ info[3] }}</td>
+          <td>{{ info[4] }}</td>
+          <td>{{ info[5] }}</td>
+          <td>
+            <a href="{{ url_for('general_info_bp.general_info') }}">Editar</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
 
-    <!-- Formulário para adicionar casas -->
+  <div class="card">
     <form method="POST">
       <input type="hidden" name="month" value="{{ month }}" />
       <input type="hidden" name="year" value="{{ year }}" />
-      <input type="text" name="house" placeholder="Nome da casa" required />
-      <input
-        type="number"
-        name="paid_month"
-        placeholder="Mês pago"
-        min="1"
-        max="12"
-        required
-      />
-      <input
-        type="number"
-        name="paid_year"
-        placeholder="Ano pago"
-        min="2000"
-        max="2100"
-        required
-      />
+
+      <div class="form-group">
+        <input type="text" name="house" placeholder="Nome da casa" required />
+      </div>
+
+      <div class="form-group">
+        <input
+          type="number"
+          name="paid_month"
+          placeholder="Mês pago"
+          min="1"
+          max="12"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <input
+          type="number"
+          name="paid_year"
+          placeholder="Ano pago"
+          min="2000"
+          max="2100"
+          required
+        />
+      </div>
+
       <button type="submit" name="add_paid_house">Adicionar</button>
     </form>
+  </div>
 
-    <!-- Tabela de casas adicionadas -->
+  <div class="card">
     <h2>Casas adicionadas</h2>
+
     <table>
       <thead>
         <tr>
@@ -96,7 +93,7 @@
                 name="delete_index"
                 value="{{ loop.index0 }}"
               />
-              <button type="submit">Deletar</button>
+              <button type="submit" class="btn-danger">Deletar</button>
             </form>
           </td>
         </tr>
@@ -110,14 +107,18 @@
       </tbody>
     </table>
 
-    <p><strong>Total de casas: {{ total_casas }}</strong></p>
+    <div class="total">Total de casas: {{ total_casas }}</div>
+  </div>
 
-    <!-- Formulário para salvar tudo no banco -->
-    <form method="POST" style="margin-top: 12px">
+  <div class="card">
+    <form method="POST">
       <input type="hidden" name="month" value="{{ month }}" />
       <input type="hidden" name="year" value="{{ year }}" />
-      <button type="submit" name="save_all">Salvar no banco</button>
+      <button type="submit" name="save_all" class="btn-secondary">
+        Salvar no banco
+      </button>
     </form>
-    {% endblock %}
-  </body>
-</html>
+  </div>
+</div>
+
+{% endblock %}

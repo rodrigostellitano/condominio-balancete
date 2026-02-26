@@ -1,65 +1,116 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Cadastro de Casas com Débito</title>
-  </head>
-  <body>
-    {% extends "base.html" %} {% block content %}
-    <h1>Casas com Débito - {{ month }}/{{ year }}</h1>
+{% extends "base.html" %} {% block content %}
+  <h1>
+    Casas com Débito
+    <span class="periodo">{{ month }}/{{ year }}</span>
+  </h1>
 
+  {% if info %}
+  <div class="card">
+    <h2>Informações do Mês</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Mês</th>
+          <th>Ano</th>
+          <th>Valor Anterior</th>
+          <th>Cotas Pagas</th>
+          <th>Tags</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ info[1] }}</td>
+          <td>{{ info[2] }}</td>
+          <td>{{ info[3] }}</td>
+          <td>{{ info[4] }}</td>
+          <td>{{ info[5] }}</td>
+          <td>
+            <a href="{{ url_for('general_info_bp.general_info') }}">Editar</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  <div class="card">
     <h2>Adicionar Casa com Débito</h2>
+
     <form method="POST">
-      <label>Casa:</label>
-      <input type="text" name="house" required /><br />
-      <label>Mês de Débito:</label>
-      <input
-        type="text"
-        name="debt_month"
-        value="{{ mes_anterior }}"
-        required
-      /><br />
-      <label>Ano de Débito:</label>
-      <input
-        type="text"
-        name="debt_year"
-        value="{{ ano_anterior }}"
-        required
-      /><br /><br />
+      <div class="form-group">
+        <label>Casa:</label>
+        <input type="text" name="house" required />
+      </div>
+
+      <div class="form-group">
+        <label>Mês de Débito:</label>
+        <input
+          type="text"
+          name="debt_month"
+          value="{{ mes_anterior }}"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Ano de Débito:</label>
+        <input
+          type="text"
+          name="debt_year"
+          value="{{ ano_anterior }}"
+          required
+        />
+      </div>
+
       <button type="submit" name="add_debit" value="1">Adicionar Casa</button>
     </form>
+  </div>
 
+  <div class="card">
     <h2>Casas Temporárias</h2>
-    <table border="1">
-      <tr>
-        <th>Casa</th>
-        <th>Mês Débito</th>
-        <th>Ano Débito</th>
-        <th>Ações</th>
-      </tr>
-      {% for d in debits %}
-      <tr>
-        <td>{{ d.house }}</td>
-        <td>{{ d.debt_month }}</td>
-        <td>{{ d.debt_year }}</td>
-        <td>
-          <form method="POST" style="display: inline">
-            <input
-              type="hidden"
-              name="delete_index"
-              value="{{ loop.index0 }}"
-            />
-            <button type="submit" name="delete">Deletar</button>
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
 
+    <table>
+      <thead>
+        <tr>
+          <th>Casa</th>
+          <th>Mês Débito</th>
+          <th>Ano Débito</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in debits %}
+        <tr>
+          <td>{{ d.house }}</td>
+          <td>{{ d.debt_month }}</td>
+          <td>{{ d.debt_year }}</td>
+          <td>
+            <form method="POST" style="display: inline">
+              <input
+                type="hidden"
+                name="delete_index"
+                value="{{ loop.index0 }}"
+              />
+              <button type="submit" name="delete" class="btn-danger">
+                Deletar
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
     <form method="POST">
-      <button type="submit" name="save_all" value="1">
-        Salvar Todas no Banco
+      <button type="submit" name="save_all" value="1" class="btn-secondary">
+        Salvar
       </button>
     </form>
-    {% endblock %}
-  </body>
-</html>
+  </div>
+</div>
+
+{% endblock %}
